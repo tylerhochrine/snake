@@ -95,22 +95,29 @@ def make_game():
             snake_position[0] -= 10
         if direction == 'RIGHT' and not game_ended:
             snake_position[0] += 10
+        # make snake stop moving when it dies
         if direction == 'NONE':
             snake_position[0] += 0
             snake_position[1] += 0
             game_ended = True
 
+        # add another snake body at front of snake to move forward
         snake_body.insert(0, list(snake_position))
+
+        # if snake eats the fruit
         if snake_position[0] == fruit_position[0] and snake_position[1] == fruit_position[1]:
             score += 1
             fruit_spawn = False
         else:
+            # if snake is still alive, remove last piece of snake body to imitate movement
             if not game_ended:
                 snake_body.pop()
 
+        # create new fruit in random position if it just got eaten
         if not fruit_spawn:
             fruit_position = [random.randrange(1, (WIDTH // 20)) * 20 + 2,
                               random.randrange(1, (HEIGHT // 20)) * 20 + 62]
+            # create new position for fruit if the generated position exists in the snake body
             while fruit_position in snake_body:
                 fruit_position = [random.randrange(1, (WIDTH // 20)) * 20 + 2,
                                   random.randrange(1, (HEIGHT // 20)) * 20 + 62]
